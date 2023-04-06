@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Raleway:wght@300&display=swap"
+        rel="stylesheet">
+    <title>Jogo da Velha</title>
+
+<body>
+    <h1 class="title">Jogo da velha</h1>
+    <table>
+        <tr>
+            <td id="0"></td>
+            <td id="1"></td>
+            <td id="2"></td>
+        </tr>
+        <tr>
+            <td id="3"></td>
+            <td id="4"></td>
+            <td id="5"></td>
+        </tr>
+        <tr>
+            <td id="6"></td>
+            <td id="7"></td>
+            <td id="8"></td>
+        </tr>
+    </table>
+    </head>
+
+    <style>
+        * {
+            background-color: #B1F1E9;
+        }
+
+        .title {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-family: 'Raleway', sans-serif;
+            font-size: 60px;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        td {
+            width: 120px;
+            height: 120px;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-family: 'Raleway', sans-serif;
+            font-size: 50px;
+            font-weight: bold;
+            border: 1px solid black;
+            cursor: pointer;
+            background-color: #D7F8F4;
+        }
+    </style>
+
+
+
+
+    </head>
+
+
+    <script>
+        // Declara a variável que vai controlar qual jogador deve jogar a próxima vez
+        var currentPlayer = "X";
+
+        // Seleciona todas as células da tabela
+        var cells = document.getElementsByTagName("td");
+
+        // Adiciona um ouvinte de eventos "click" a cada célula
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].addEventListener("click", () => {
+                // Verifica se a célula clicada está vazia
+                if (this.innerHTML == "") {
+                    // Define o valor da célula para o símbolo do jogador atual
+                    this.innerHTML = currentPlayer;
+                    // Verifica se há um ganhador
+                    if (checkWin()) {
+                        // Exibe uma mensagem indicando o ganhador
+                        alert(currentPlayer + " ganhou!");
+                        // Reinicia o jogo
+                        resetBoard();
+                    } else if (checkTie()) { // Verifica se há empate
+                        // Exibe uma mensagem indicando que houve empate
+                        alert("Empate!");
+                        // Reinicia o jogo
+                        resetBoard();
+                    } else { // Se nenhum dos casos anteriores ocorreu
+                        // Atualiza a variável para o próximo jogador
+                        currentPlayer = currentPlayer == "X" ? "O" : "X";
+                    }
+                }
+            });
+        }
+
+        // Verifica se o jogador atual venceu
+        function checkWin() {
+            // Define todas as combinações vencedoras possíveis
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            // Verifica se alguma combinação vencedora foi alcançada
+            return winningCombos.some(combo =>
+                // Verifica se todas as células da combinação possuem o símbolo do jogador atual
+                combo.every(index => cells[index].innerHTML == currentPlayer)
+            );
+        }
+
+        // Verifica se o jogo terminou em empate
+        function checkTie() {
+            // Retorna true se todas as células estiverem preenchidas
+            return Array.from(cells).every(cell => cell.innerHTML !== "");
+        }
+
+        // Reinicia o jogo
+        function resetBoard() {
+            // Apaga todos os símbolos das células por conta do ForEach que serve para 
+            Array.from(cells).forEach(cell => cell.innerHTML = "");
+            // Define o jogador atual como "X"
+            currentPlayer = "X";
+        }
+    </script>
+
+</body>
+
+</html>
